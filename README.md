@@ -29,3 +29,14 @@ filename = "taken.wav" # "my-audio.wav" or "taken.wav"
 
 audio, rate = librosa.load(filename, sr = 16000)
 # Taking an input value
+input_values = tokenizer(audio, return_tensors = "pt").input_values
+input_values
+tensor([[-0.0001, -0.0001, -0.0001,  ..., -0.0305, -0.0323, -0.0001]])
+# feeding input values to our model - storing logits
+logits = model(input_values).logits
+# max probab values - storing predicted id's
+prediction = torch.argmax(logits, dim = -1)
+# Passing the prediction to the tokenzer decode to get the transcription
+transcription = tokenizer.batch_decode(prediction)[0]
+transcription
+"BUT IF YOU DON'T I WILL LOOK FOR YOU I WILL FIND YOU AND I WILL KILL YOU"
